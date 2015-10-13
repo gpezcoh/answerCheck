@@ -9,8 +9,32 @@ var focusedBox = 0;
 var uploaded = false;
 var finalAnswerBox;
 var demoBox = document.getElementById("demoBox");
+var correctAnswers = [];
+var incorrectAnswers = [];
+var subjectList = [];
+var subjectListNames = [];
+var textFile = null;
+var resultText = [];
+var resultString = "";
+var wrongSubjectList = [];
+var wrongSubjectListNames = [];
+var numberSubmit = false;
+
+function Question(array)
+{
+	this.answer = array[0];
+	this.subject = array[1];
+}
+
+function Subject(name,number)
+{
+	this.name = name;
+	this.number = number;
+}
 
 $(document).ready(function(){
+	document.addEventListener('keydown', keyPresses);
+	$("#number").focus();
 });
 
 function createSearchBoxes()
@@ -33,6 +57,14 @@ function createSearchBoxes()
     	answerBox.style.left = "40px";
     	submitInputs.appendChild(answerBox);
 	}
+}
+
+function keyPresses(event)
+{
+	if(event.keyCode === 13 && numberSubmit === false) 
+  	{
+  		submitNumber();
+  	}
 }
 
 function switchFocus()
@@ -63,24 +95,30 @@ uploadButton.on('click', function() {
 
 function processFile(e) {
     var file = e.target.result,
-        results;
+        results,
+        subjects;
     if (file && file.length) {
         results = file.split("\n");
         for(var i = 0; i < results.length; i++)
         {
-        	answerList.push(results[i]);
-        	// $('#answerBox-' + i).val(results[i]);
+        	answerList.push(new Question(results[i].split("-")));
+        	if (subjectListNames.indexOf(answerList[i].subject) === -1)
+        	{
+        		subjectList.push(new Subject(answerList[i].subject,1))
+        		subjectListNames.push(answerList[i].subject);
+        	}
+        	else
+        	{
+        		subjectList[subjectListNames.indexOf(answerList[i].subject)].number++;
+        	}
     	}
     }
     uploaded = true;
 	$("#uploadText").show();
-	$("#upload").hide();
-	$("#submit").show();
     $("#answerBox-" + focusedBox).focus();
-    var submit = document.getElementById("submit")
-    submit.style.top = 100 + 40 * number + "px";
-    var restart = document.getElementById("restart")
-    restart.style.top = 100 + 40 * number + "px";
+    createSearchBoxes();
+	$(".answerBox").show();
+	$(".index").show();
 }
 
 submitButton.on('click', function() {
@@ -89,17 +127,38 @@ submitButton.on('click', function() {
 		for(var i = 0; i < number; i++)
 		{
 			var answer = $('#answerBox-' + i).val();
-			if(answer === answerList[i])
+			if(answer === answerList[i].answer)
 			{
 				var testAnswer = document.getElementById("answerBox-" + i);
 				testAnswer.style.backgroundColor = "green";
+				correctAnswers.push(answerList[i]);
 			}
 			else
 			{
 				var testAnswer = document.getElementById("answerBox-" + i);
 				testAnswer.style.backgroundColor = "red";
+				incorrectAnswers.push(answerList[i]);
+				if (wrongSubjectListNames.indexOf(answerList[i].subject) === -1)
+        		{
+        			wrongSubjectList.push(new Subject(answerList[i].subject,1))
+        			wrongSubjectListNames.push(answerList[i].subject);
+        		}
+        		else
+        		{
+        			wrongSubjectList[wrongSubjectListNames.indexOf(answerList[i].subject)].number++;
+        		}
 			}
 		}
+		var link = document.getElementById("createFile");
+		link.href = makeTextFile(createText());
+		// $("#createFile").css({ backgroundColor: "#F7FE2E", fontColor: "black"});
+		$('#createFile').animate({
+          'opacity' : "0.2",
+        },700, function() {
+          $('#createFile').animate({
+          'opacity' : "1",
+        },700);
+      });
 	}
 	else
 	{
@@ -107,27 +166,68 @@ submitButton.on('click', function() {
 	}
 });
 
+function createText()
+{
+	resultText.push("Total Score");
+	resultText.push("\n\n");
+	resultText.push("" + ((correctAnswers.length/number) * 100) + "%");
+	resultText.push("\n\n");
+	for(var i = 0; i < subjectList.length; ++i)
+	{
+		if(wrongSubjectListNames.indexOf(subjectListNames[i]) === -1)
+		{
+			console.log(subjectListNames[i]);
+			resultText.push("" + subjectList[i].number + " out of " + subjectList[i].number + "    ");
+			resultText.push("" + subjectListNames[i] + ": 100%");
+			resultText.push("\n\n");
+		}
+		else
+		{
+			var wrongNumber = wrongSubjectList[wrongSubjectListNames.indexOf(subjectListNames[i])].number;
+			resultText.push("" + (subjectList[i].number - wrongNumber) + " out of " + subjectList[i].number + "    ");
+			resultText.push("" + subjectListNames[i] + ": " + 
+				((subjectList[i].number - wrongNumber)/subjectList[i].number) * 100 + "%");
+			resultText.push("\n\n");
+		}
+	}
+	for (var i = 0; i < resultText.length; ++i)
+	{
+		resultString = resultString + resultText[i];
+	}
+	return resultString;
+}
+
 restartButton.on('click', function() {
 	demoBox.removeChild(document.getElementById("submitInputs"));
 	var submitInputs = document.createElement('div');
 	submitInputs.id = "submitInputs";
 	demoBox.appendChild(submitInputs);
-	$("#upload").hide();
 	$("#files").hide();
 	$("#uploadText").hide();
-	$("#submit").hide();
-	$("#restart").hide();
-	$("#numberSubmit").show();
+	$("#number").show();
+	numberSubmit = false;
+	$("#number").focus();
 	});
 
-numberSubmitButton.on('click', function() {
+function submitNumber() 
+{
+	numberSubmit = true;
 	number = $('#number').val();
 	focusedBox = 0;
-	createSearchBoxes();
-	$(".answerBox").show();
-	$(".index").show();
-	$("#upload").show();
 	$("#files").show();
-	$("#numberSubmit").hide();
-	$("#restart").show();
-});
+	$("#number").hide();
+}
+
+  makeTextFile = function (text) {
+    var data = new Blob([text], {type: 'text/plain'});
+
+    // If we are replacing a previously generated file we need to
+    // manually revoke the object URL to avoid memory leaks.
+    if (textFile !== null) {
+      window.URL.revokeObjectURL(textFile);
+    }
+
+    textFile = window.URL.createObjectURL(data);
+
+    return textFile;
+  };

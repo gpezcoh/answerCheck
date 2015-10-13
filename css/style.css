@@ -15,11 +15,6 @@
 	display: none;
 }
 
-#intro{
-	position: absolute;
-	font-size: 50px;
-}
-
 #demoBox{
 	position: absolute;
 	width: 200px;
@@ -27,54 +22,64 @@
 
 #files{
 	position: absolute;
-	left: 600px;
-	top: 20px;
+	left: 400px;
+	top: 100px;
 	display: none;
-}
-
-#upload{
-	position: absolute;
-	left: 600px;
-	top: 60px;
-	display: none;
-}
-
-#submit{
-	position: absolute;
-	left: 600px;
-	top: 400px;
-	display: none;
+	width: 300px;
 }
 
 #uploadText{
 	position: absolute;
 	left: 600px;
-	top: 100px;
+	top: 300px;
 	display: none;
 }
 
 #number{
 	position: absolute;
-	left: 800px;
-	top: 60px;
-}
-
-#numberText{
-	position: absolute;
-	left: 800px;
-	top: 40px;
-	width: 200px;
-}
-
-#numberSubmit{
-	position: absolute;
-	left: 800px;
+	left: 400px;
 	top: 100px;
+	width: 400px;
 }
 
-#restart{
-	position: absolute;
-	left: 700px;
-	top: 400px;
-	display: none;
+.navbar{
+	background-color: #3F51B5;
+	border: none;
+	transition: background-color 0.5s;
+}
+
+.navbarscroll{
+	background-color: #f6f9fa;
+	border: none;
+	transition: background-color 0.5s;
+}
+
+.navbutton{
+	font-size: 1.5em;
+	color: #f6f9fa!important;
+	background-color: #3F51B5;
+	-webkit-transition: color 0.5s, background-color 0.5s;
+	transition: color 0.5s, background-color 0.5s;
+	}
+
+.navbutton:hover{
+	background-color: #f6f9fa!important;
+	color: #3F51B5!important;
+}
+
+.navbuttonscroll{
+	font-size: 1.5em;
+	color: #3F51B5;
+	background-color: #f6f9fa;
+	-webkit-transition: color 0.5s, background-color 0.5s;
+	transition: color 0.5s, background-color 0.5s;
+}
+
+.navbuttonscroll:hover{
+	background-color: #3F51B5;
+	color: #f6f9fa;
+}
+
+#createFile{
+	background-color: #3F51B5;
 }
