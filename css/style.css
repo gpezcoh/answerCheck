@@ -1,0 +1,80 @@
+.answerBox{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	overflow: hidden;
+	background-color: white;
+	display: none;
+}
+
+.index{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	overflow: hidden;
+	display: none;
+}
+
+#intro{
+	position: absolute;
+	font-size: 50px;
+}
+
+#demoBox{
+	position: absolute;
+	width: 200px;
+}
+
+#files{
+	position: absolute;
+	left: 600px;
+	top: 20px;
+	display: none;
+}
+
+#upload{
+	position: absolute;
+	left: 600px;
+	top: 60px;
+	display: none;
+}
+
+#submit{
+	position: absolute;
+	left: 600px;
+	top: 400px;
+	display: none;
+}
+
+#uploadText{
+	position: absolute;
+	left: 600px;
+	top: 100px;
+	display: none;
+}
+
+#number{
+	position: absolute;
+	left: 800px;
+	top: 60px;
+}
+
+#numberText{
+	position: absolute;
+	left: 800px;
+	top: 40px;
+	width: 200px;
+}
+
+#numberSubmit{
+	position: absolute;
+	left: 800px;
+	top: 100px;
+}
+
+#restart{
+	position: absolute;
+	left: 700px;
+	top: 400px;
+	display: none;
+}
