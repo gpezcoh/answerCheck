@@ -186,7 +186,7 @@ function createText()
 			var wrongNumber = wrongSubjectList[wrongSubjectListNames.indexOf(subjectListNames[i])].number;
 			resultText.push("" + (subjectList[i].number - wrongNumber) + " out of " + subjectList[i].number + "    ");
 			resultText.push("" + subjectListNames[i] + ": " + 
-				((subjectList[i].number - wrongNumber)/subjectList[i].number) * 100 + "%");
+				(Math.round((subjectList[i].number - wrongNumber)/subjectList[i].number) * 100) + "%");
 			resultText.push("\n\n");
 		}
 	}
@@ -207,6 +207,16 @@ restartButton.on('click', function() {
 	$("#number").show();
 	numberSubmit = false;
 	$("#number").focus();
+	 correctAnswers = [];
+	 incorrectAnswers = [];
+	 subjectList = [];
+	 subjectListNames = [];
+	 textFile = null;
+	 resultText = [];
+	 resultString = "";
+	 wrongSubjectList = [];
+	 wrongSubjectListNames = [];
+	 numberSubmit = false;
 	});
 
 function submitNumber() 
