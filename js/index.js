@@ -19,6 +19,7 @@ var resultString = "";
 var wrongSubjectList = [];
 var wrongSubjectListNames = [];
 var numberSubmit = false;
+var tempBox;
 
 function Question(array)
 {
@@ -69,8 +70,10 @@ function keyPresses(event)
 
 function switchFocus()
 {
-	if(focusedBox < number)
+	tempBox = document.getElementById("answerBox-" + focusedBox);
+	if(focusedBox < number && tempBox.value != "")
 	{
+		console.log("hey")
 		++focusedBox;
 		$("#answerBox-" + focusedBox).focus();
 	}
@@ -115,10 +118,13 @@ function processFile(e) {
     }
     uploaded = true;
 	$("#uploadText").show();
-    $("#answerBox-" + focusedBox).focus();
-    createSearchBoxes();
+	createSearchBoxes();
 	$(".answerBox").show();
 	$(".index").show();
+    $("#answerBox-" + focusedBox).focus();
+    $(".answerBox").click(function(){
+    	focusedBox = parseInt(this.id.split("-").pop());
+    });
 }
 
 submitButton.on('click', function() {
@@ -186,7 +192,7 @@ function createText()
 			var wrongNumber = wrongSubjectList[wrongSubjectListNames.indexOf(subjectListNames[i])].number;
 			resultText.push("" + (subjectList[i].number - wrongNumber) + " out of " + subjectList[i].number + "    ");
 			resultText.push("" + subjectListNames[i] + ": " + 
-				(Math.round((subjectList[i].number - wrongNumber)/subjectList[i].number) * 100) + "%");
+				(Math.round((subjectList[i].number - wrongNumber)/subjectList[i].number * 100) + "%"));
 			resultText.push("\n\n");
 		}
 	}
