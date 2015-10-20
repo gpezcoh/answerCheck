@@ -73,7 +73,6 @@ function switchFocus()
 	tempBox = document.getElementById("answerBox-" + focusedBox);
 	if(focusedBox < number && tempBox.value != "")
 	{
-		console.log("hey")
 		++focusedBox;
 		$("#answerBox-" + focusedBox).focus();
 	}
@@ -176,13 +175,12 @@ function createText()
 {
 	resultText.push("Total Score");
 	resultText.push("\n\n");
-	resultText.push("" + ((correctAnswers.length/number) * 100) + "%");
+	resultText.push("" + Math.round((correctAnswers.length/number) * 100) + "%");
 	resultText.push("\n\n");
 	for(var i = 0; i < subjectList.length; ++i)
 	{
 		if(wrongSubjectListNames.indexOf(subjectListNames[i]) === -1)
 		{
-			console.log(subjectListNames[i]);
 			resultText.push("" + subjectList[i].number + " out of " + subjectList[i].number + "    ");
 			resultText.push("" + subjectListNames[i] + ": 100%");
 			resultText.push("\n\n");
