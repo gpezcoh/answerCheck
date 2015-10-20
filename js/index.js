@@ -21,10 +21,12 @@ var wrongSubjectListNames = [];
 var numberSubmit = false;
 var tempBox;
 
-function Question(array)
+function Question(array,number)
 {
 	this.answer = array[0];
 	this.subject = array[1];
+	this.number = number;
+	this.wrongAnswer;
 }
 
 function Subject(name,number)
@@ -103,7 +105,7 @@ function processFile(e) {
         results = file.split("\n");
         for(var i = 0; i < results.length; i++)
         {
-        	answerList.push(new Question(results[i].split("-")));
+        	answerList.push(new Question(results[i].split("-"),i));
         	if (subjectListNames.indexOf(answerList[i].subject) === -1)
         	{
         		subjectList.push(new Subject(answerList[i].subject,1))
@@ -142,6 +144,7 @@ submitButton.on('click', function() {
 			{
 				var testAnswer = document.getElementById("answerBox-" + i);
 				testAnswer.style.backgroundColor = "red";
+				answerList[i].wrongAnswer = answer;
 				incorrectAnswers.push(answerList[i]);
 				if (wrongSubjectListNames.indexOf(answerList[i].subject) === -1)
         		{
@@ -193,6 +196,31 @@ function createText()
 				(Math.round((subjectList[i].number - wrongNumber)/subjectList[i].number * 100) + "%"));
 			resultText.push("\n\n");
 		}
+	}
+	resultText.push("Question Number:  ")
+	for(var i = 0; i < incorrectAnswers.length; ++i)
+	{
+		resultText.push("" + incorrectAnswers[i].number + "  ");
+	}
+	resultText.push("\n\n");
+	resultText.push("Correct Answer:   ")
+	for(var i = 0; i < incorrectAnswers.length; ++i)
+	{
+		if(incorrectAnswers[i].number > 9)
+		{
+			resultText.push(" ");
+		}
+		resultText.push("" + incorrectAnswers[i].answer + "  ");
+	}
+	resultText.push("\n\n");
+	resultText.push("Student Answer:   ")
+	for(var i = 0; i < incorrectAnswers.length; ++i)
+	{
+		if(incorrectAnswers[i].number > 9)
+		{
+			resultText.push(" ");
+		}
+		resultText.push("" + incorrectAnswers[i].wrongAnswer + "  ");
 	}
 	for (var i = 0; i < resultText.length; ++i)
 	{
